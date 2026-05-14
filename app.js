@@ -41,6 +41,10 @@ app.all( '/', function( req, res ){
   res.end();
 });
 
+app.all( '/redirect', function( req, res ){
+  res.redirect( 301, '/' );  //. 301: Not found, 302: Found
+});
+
 var port = process.env.PORT || 8080;
 app.listen( port );
 console.log( "server starting on " + port + " ..." );
