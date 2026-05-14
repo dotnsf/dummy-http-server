@@ -17,16 +17,27 @@ if( AUTH_USERNAME && AUTH_PASSWORD ){
 
   app.all( '/auth', function( req, res ){
     var method = req.method;
+    var json = { status: true, text: "Hello Authed-" + method + " World!" };
+    if( req.body ){
+      var body = req.body;
+      json.body = body;
+    }
     res.contentType( 'application/json; charset=utf-8' );
-    res.write( JSON.stringify( { status: true, text: "Hello Authed-" + method + " World!" }, null, 2 ) );
+    res.write( JSON.stringify( json, null, 2 ) );
     res.end();
   });
 }
 
 app.all( '/', function( req, res ){
   var method = req.method;
+  var json = { status: true, text: "Hello " + method + " World!" };
+  if( req.body ){
+    var body = req.body;
+    json.body = body;
+  }
+
   res.contentType( 'application/json; charset=utf-8' );
-  res.write( JSON.stringify( { status: true, text: "Hello " + method + " World!" }, null, 2 ) );
+  res.write( JSON.stringify( json, null, 2 ) );
   res.end();
 });
 
