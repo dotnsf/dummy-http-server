@@ -1,5 +1,6 @@
 //. app.js
 var express = require( 'express' ),
+    asiosBase = require( 'axios' ),
     bodyParser = require( 'body-parser' ),
     app = express();
 
@@ -44,6 +45,50 @@ app.all( '/', function( req, res ){
 app.all( '/redirect', function( req, res ){
   res.redirect( 301, '/' );  //. 301: Not found, 302: Found
 });
+
+app.all( '/proxy', async function( req, res ){
+  var method = req.method;
+  var headers = req.headers;
+  var _url = req.query._url;
+  if( _url ){
+    var _query = '';
+    if( req.query ){
+      var query = req.query.join( '&' );
+      if( query ){
+        _query = '?' + query;
+      }
+    }
+    var body = req.body;
+
+    var response = await _request( _url + _query, method, body, headers );
+    res.write( JSON.stringify( response, null, 2 ) );
+    res.end();
+  }else{
+    res.status( 400 ); 
+    res.contentType( 'application/json; charset=utf-8' );
+    res.write( JSON.stringify( { status: false, usage: '?_url=https://example.com/xxx/' }, null, 2 ) );
+    res.end();
+  }
+});
+
+async function _request( url, method, body, headers ){
+  return new Promise( function( resolve, reject ){
+    var options = {
+      method: method,
+      url: url,
+      headers: headers,
+      data: body
+    };
+    axiosBase.request( options )
+      .then( function( response ){
+        resolve( response.data );
+      })
+      .catch( function( error ){
+        reject( error );
+      });
+  });
+}
+
 
 var port = process.env.PORT || 8080;
 app.listen( port );
