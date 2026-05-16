@@ -49,6 +49,7 @@ app.all( '/redirect', function( req, res ){
 app.all( '/proxy', async function( req, res ){
   var method = req.method;
   var headers = req.headers;
+  console.log( JSON.stringify( req.query, null, 2 ) );
   var _url = req.query._url;
   if( _url ){
     var _query = '';
