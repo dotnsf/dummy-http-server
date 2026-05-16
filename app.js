@@ -49,13 +49,13 @@ app.all( '/redirect', function( req, res ){
 app.all( '/proxy', async function( req, res ){
   var method = req.method;
   var headers = req.headers;
-  console.log( JSON.stringify( req.query, null, 2 ) );
+  //console.log( JSON.stringify( req.query, null, 2 ) );
   var _url = req.query._url;
   if( _url ){
     var _query = '';
     if( req.query ){
       var ary = [];
-      Object.keys( req.query ).foreEach( function( key ){
+      Object.keys( req.query ).forEach( function( key ){
         var value = req.query[key];
         ary.push( key + '=' + value );
       });
