@@ -65,9 +65,16 @@ app.all( '/proxy', async function( req, res ){
     }
     var body = req.body;
 
-    var response = await _request( _url + _query, method, body, headers );
-    res.write( JSON.stringify( response, null, 2 ) );
-    res.end();
+    _request( _url + _query, method, body, headers )
+      .then( function( response ){
+        res.write( JSON.stringify( response, null, 2 ) );
+        res.end();
+      } )
+      .catch( function( error ){
+        res.status( 400 );
+        res.write( JSON.stringify( error, null, 2 ) );
+        res.end();
+      } );
   }else{
     res.status( 400 ); 
     res.contentType( 'application/json; charset=utf-8' );
