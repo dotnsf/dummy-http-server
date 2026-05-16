@@ -53,9 +53,13 @@ app.all( '/proxy', async function( req, res ){
   if( _url ){
     var _query = '';
     if( req.query ){
-      var query = req.query.join( '&' );
-      if( query ){
-        _query = '?' + query;
+      var ary = [];
+      Object.keys( req.query ).foreEach( function( key ){
+        var value = req.query[key];
+        ary.push( key + '=' + value );
+      });
+      if( ary.length > 0 ){
+        _query = '?' + ary.join( '&' );
       }
     }
     var body = req.body;
