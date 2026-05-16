@@ -1,6 +1,6 @@
 //. app.js
 var express = require( 'express' ),
-    asiosBase = require( 'axios' ),
+    axiosBase = require( 'axios' ),
     bodyParser = require( 'body-parser' ),
     app = express();
 
